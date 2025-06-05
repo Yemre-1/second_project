@@ -1,0 +1,26 @@
+{% extends 'main/base.html' %}
+{% block content %}
+  <div class="container py-4">
+    <h3 class="mb-4">🔍 "{{ query }}" için arama sonuçları:</h3>
+
+    {% if products %}
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for product in products %}
+          <div class="col">
+            <div class="card h-100 shadow-sm">
+              <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+              <div class="card-body">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text">{{ product.description|truncatewords:15 }}</p>
+                <p class="text-success fw-bold">{{ product.price }}₺</p>
+                <a href="{% url 'product_detail' product.id %}" class="btn btn-outline-primary">Detaya Git</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-muted">Sonuç bulunamadı.</p>
+    {% endif %}
+  </div>
+{% endblock %}

@@ -1,30 +1,39 @@
 {% extends 'main/base.html' %}
 {% block title %}Profil{% endblock %}
 {% block content %}
-<div class="row justify-content-center mt-5">
-<div class="col-md-6">
-    <div class="card">
-        <div class="card-header">
-            <h5>{{user.username}} , Profilim</h5>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-lg border-0 rounded-4 bg-light text-dark">
+        <div class="card-body text-center p-5">
+          <!-- Avatar -->
+          <div class="mb-4">
+            {% if profile.avatar %}
+              <img src="{{ profile.avatar.url }}" class="rounded-circle shadow" style="width: 150px; height: 150px; object-fit: cover;" alt="Profil Resmi">
+            {% else %}
+              <img src="/media/avatars/default.png" class="rounded-circle shadow" style="width: 150px; height: 150px; object-fit: cover;" alt="Varsayılan Profil">
+            {% endif %}
+          </div>
+
+          <!-- Kullanıcı Bilgileri -->
+          <h3 class="mb-0 text-primary">{{ user.username }}</h3>
+          <p class="text-muted">{{ user.email }}</p>
+
+          <div class="mt-4 d-flex flex-wrap justify-content-center gap-2">
+            <a href="{% url 'edit_profile' %}" class="btn btn-outline-primary">✏️ Profilimi Güncelle</a>
+            <a href="{% url 'order_list' %}" class="btn btn-outline-secondary">📦 Siparişlerim</a>
+            <a href="{% url 'password_change' %}" class="btn btn-outline-warning">🔒 Şifre Değiştir</a>
+          </div>
+
+          <hr class="my-4">
+
+          <div class="d-flex justify-content-between">
+            <a href="{% url 'home' %}" class="btn btn-success w-45">🏠 Anasayfa</a>
+            <a href="{% url 'logout' %}" class="btn btn-danger w-45">🚪 Çıkış Yap</a>
+          </div>
         </div>
-        <div class="card-body">
-            <div class="row">
-            <div class="col-8"></div>
-            <div class="col-4">{% if profile.avatar %}
-    <img src="{{ profile.avatar.url }}" class="avatar" alt="avatar">
-{% else %}
-    <img src="/media/avatars/default.png" class="avatar" alt="avatar">
-{% endif %}</div>
-            </div>
-            <p>Kullanıcı Adı: {{user.username}}  <a href="{%url 'edit_profile'%}">Güncelle</a></p>
-            <p>E-mail: {{user.email}}  <a href="{%url 'edit_profile'%}">Güncelle</a></p>
-            <a href="{%url 'order_list'%}"><button class="btn btn-outline-secondary">Siparişlerim</button></a>
-        </div>
-        <div class="card-footer">
-        <a href="{%url 'home'%}" class="btn btn-primary">Anasayfaya Dön</a>
-        <a href="{%url 'logout'%}" class="btn btn-secondary">Çıkış</a>
-        </div>
+      </div>
     </div>
-   </div>    
+  </div>
 </div>
-{%endblock%}
+{% endblock %}

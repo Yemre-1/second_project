@@ -5,11 +5,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import EmailVerificationToken  , UserProfile, Product, Cart, Order, OrderItem , CartItem
+from .models import EmailVerificationToken  , Category, Comment, UserProfile, Product, Cart, Order, OrderItem , CartItem
 from django.urls import reverse
 from django.shortcuts import get_object_or_404 
 from django.contrib.sites.shortcuts import get_current_site
-from .forms import CheckOutForm
+from .forms import CheckOutForm , CommentForm
+from django.db.models import Q
 
 def home(request):
     products = Product.objects.all()
@@ -223,4 +224,45 @@ def order_detail(request, order_id):
 
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
-    return render(request, 'main/product_detail.html', {'product':product})
+    comments = product.comments.order_by('-created_at')
+    if request.method=='POST':
+        if request.user.is_authenticated:
+            form = CommentForm(request.POST)
+            if form.is_valid():
+                Comment.objects.create(
+                    product=product,
+                    user = request.user,
+                    content= form.cleaned_data['content']
+                )
+                return redirect('product_detail', product_id=product.id)
+        else:
+            return redirect('login')
+    else:
+        form=CommentForm()
+    context={
+        'product':product,
+        'comments':comments,
+        'form':form,
+    }            
+
+    return render(request, 'main/product_detail.html', context)
+def category_detail(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    products = category.products.all()
+
+    categories = Category.objects.all()  # Tüm kategoriler sidebar için
+    context = {
+        'category': category,
+        'products': products,
+        'categories': categories,
+        'current_category_id': category.id,  # Aktif kategoriyi belirlemek için
+    }
+    return render(request, 'main/category_detail.html', context)
+def product_search(request):
+    query= request.GET.get('q','')
+    products = Product.objects.filter(name__icontains=query) if query else []
+    context ={
+        'query':query,
+        'products':products,
+    }
+    return render(request, 'main/search_results.html',context)

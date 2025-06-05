@@ -3,9 +3,12 @@
 {% block content %}
 <div class="container mt-5">
   <div class="row">
-    <div class="col-md-6">
-      <img src="{{ product.image.url }}" class="img-fluid rounded shadow-sm" alt="{{ product.name }}">
+    <!-- Ürün Görseli -->
+    <div class="col-md-6 text-center">
+      <img src="{{ product.image.url }}" class="img-fluid rounded shadow-sm" alt="{{ product.name }}" style="max-height: 350px; object-fit: contain;">
     </div>
+
+    <!-- Ürün Bilgileri -->
     <div class="col-md-6">
       <h2 class="mb-3">{{ product.name }}</h2>
       <p class="text-muted">{{ product.description }}</p>
@@ -13,15 +16,51 @@
 
       <form method="post" action="{% url 'add_to_cart' product.id %}">
         {% csrf_token %}
-        {%if user.is_authenticated%}
-        <button type="submit" class="btn btn-primary mt-3">🛒 Sepete Ekle</button>
-        {%else%}
-      <a href="{%url 'login'%}"><button type="button" class="btn btn-primary mt-3">🛒 Sepete Ekle</button></a>
-      {%endif%}
+        {% if user.is_authenticated %}
+          <button type="submit" class="btn btn-primary mt-3">🛒 Sepete Ekle</button>
+        {% else %}
+          <a href="{% url 'login' %}" class="btn btn-primary mt-3">🛒 Sepete Ekle</a>
+        {% endif %}
       </form>
 
       <a href="{% url 'product_list' %}" class="btn btn-link mt-3">← Tüm Ürünlere Dön</a>
     </div>
   </div>
+
+  <!-- Yorumlar Bölümü -->
+  <hr class="my-5">
+  <h3>Yorumlar</h3>
+
+  {% if comments %}
+    <ul class="list-group mb-4">
+      {% for comment in comments %}
+        <li class="list-group-item">
+          <strong>{{ comment.user.username }}</strong> <small class="text-muted">{{ comment.created_at|date:"d M Y H:i" }}</small>
+          <p class="mb-1">{{ comment.content }}</p>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Henüz yorum yok. İlk yorumu sen yap!</p>
+  {% endif %}
+
+  <!-- Yorum Formu -->
+  {% if user.is_authenticated %}
+    <h5>Yeni Yorum Ekle</h5>
+    <form method="post" action="{% url 'product_detail' product.id %}">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <div class="mb-3">
+        {{ form.content.label_tag }}
+        {{ form.content }}
+        {% for error in form.content.errors %}
+          <div class="text-danger small">{{ error }}</div>
+        {% endfor %}
+      </div>
+      <button type="submit" class="btn btn-success">Yorumu Gönder</button>
+    </form>
+  {% else %}
+    <p>Yorum yapmak için <a href="{% url 'login' %}">giriş yapmalısın</a>.</p>
+  {% endif %}
 </div>
 {% endblock %}

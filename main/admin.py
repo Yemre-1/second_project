@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Product
-from .models import Order, OrderItem
+from .models import Order, OrderItem, Category
 
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'status', 'created_at')
@@ -11,3 +11,4 @@ class OrderAdmin(admin.ModelAdmin):
 admin.site.register(Order, OrderAdmin)
 admin.site.register(OrderItem)
 admin.site.register(Product)
+admin.site.register(Category)

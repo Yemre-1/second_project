@@ -26,6 +26,11 @@ urlpatterns = [
     path('order/list', views.order_list , name='order_list'),
     path('order/detail/<int:order_id>', views.order_detail, name='order_detail'),
     path('product/detail/<int:product_id>', views.product_detail, name='product_detail'),
+    path('password_change/', auth_views.PasswordChangeView.as_view(template_name='registration/password_change.html'), name='password_change'),
+    path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(template_name='registration/password_change_done.html'), name='password_change_done'),
+    path('category/<int:category_id>/', views.category_detail, name='category_detail'),
+    path('search/', views.product_search, name='product_search'),
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
