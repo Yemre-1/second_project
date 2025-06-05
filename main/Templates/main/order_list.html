@@ -1,0 +1,27 @@
+{% extends 'main/base.html' %}
+{% block title %}Giriş Yap{% endblock %}
+{% block content %}
+<h2>Siparişlerim</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Sipariş No</th>
+      <th>Tarih</th>
+      <th>Durum</th>
+      <th>Detay</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for order in orders %}
+    <tr>
+      <td>{{ order.id }}</td>
+      <td>{{ order.created_at|date:"d/m/Y H:i" }}</td>
+      <td>{{ order.get_status_display }}</td>
+      <td><a href="{% url 'order_detail' order.id %}">Detay</a></td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4">Hiç siparişiniz yok.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{%endblock%}

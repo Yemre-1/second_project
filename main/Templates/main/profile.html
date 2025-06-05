@@ -1,0 +1,30 @@
+{% extends 'main/base.html' %}
+{% block title %}Profil{% endblock %}
+{% block content %}
+<div class="row justify-content-center mt-5">
+<div class="col-md-6">
+    <div class="card">
+        <div class="card-header">
+            <h5>{{user.username}} , Profilim</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+            <div class="col-8"></div>
+            <div class="col-4">{% if profile.avatar %}
+    <img src="{{ profile.avatar.url }}" class="avatar" alt="avatar">
+{% else %}
+    <img src="/media/avatars/default.png" class="avatar" alt="avatar">
+{% endif %}</div>
+            </div>
+            <p>Kullanıcı Adı: {{user.username}}  <a href="{%url 'edit_profile'%}">Güncelle</a></p>
+            <p>E-mail: {{user.email}}  <a href="{%url 'edit_profile'%}">Güncelle</a></p>
+            <a href="{%url 'order_list'%}"><button class="btn btn-outline-secondary">Siparişlerim</button></a>
+        </div>
+        <div class="card-footer">
+        <a href="{%url 'home'%}" class="btn btn-primary">Anasayfaya Dön</a>
+        <a href="{%url 'logout'%}" class="btn btn-secondary">Çıkış</a>
+        </div>
+    </div>
+   </div>    
+</div>
+{%endblock%}

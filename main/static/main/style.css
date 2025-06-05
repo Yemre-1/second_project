@@ -1,0 +1,27 @@
+body {
+            background-color: #f8f9fa;
+        }
+        .hero {
+            padding: 60px;
+            text-align: center;
+            background-color: #343a40;
+            color: white;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+        .btn-custom {
+            margin: 10px;
+            
+        }
+ .avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #ccc;
+    }
+
+.card-img-top{
+    width: 250px;
+    height: 250px;
+}    

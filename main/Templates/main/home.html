@@ -1,0 +1,50 @@
+{% extends 'main/base.html' %}
+
+
+{% block title %}Ana Sayfa{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="text-center mb-5">
+    {% if user.is_authenticated %}
+      <h1 class="display-5 fw-bold">Hoşgeldin, {{ request.user.username }} 👋</h1>
+      <p class="lead">Yeni ürünleri keşfetmeye hazır mısın?</p>
+      <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a href="{% url 'product_list' %}" class="btn btn-success btn-lg">🛍 Ürünleri Gör</a>
+        <a href="{% url 'profile' %}" class="btn btn-info btn-lg">👤 Profilim</a>
+        <a href="{% url 'logout' %}" class="btn btn-danger btn-lg">🚪 Çıkış Yap</a>
+      </div>
+    {% else %}
+      <h1 class="display-5 fw-bold">Hoşgeldin! 👋</h1>
+      <p class="lead">Ürünlere göz atmak için giriş yap ya da kayıt ol.</p>
+      <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a href="{% url 'login' %}" class="btn btn-primary btn-lg">🔑 Giriş Yap</a>
+        <a href="{% url 'signup' %}" class="btn btn-outline-primary btn-lg">📝 Kayıt Ol</a>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Öne Çıkan Ürünler -->
+  <div class="mb-4">
+    <h3 class="mb-4 text-center">⭐ Öne Çıkan Ürünler</h3>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      {% for product in products %}
+        <div class="col">
+          <div class="card h-100 shadow-sm">
+            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+            <div class="card-body">
+              <h5 class="card-title">{{ product.name }}</h5>
+              <p class="card-text">{{ product.description|truncatewords:10 }}</p>
+              <p class="text-success fw-bold">{{ product.price }}₺</p>
+              <a href="{% url 'product_detail' product.id %}" class="btn btn-outline-success w-100">Detaya Git</a>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <p class="text-center">Henüz ürün yok.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

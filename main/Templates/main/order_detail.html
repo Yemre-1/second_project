@@ -1,0 +1,28 @@
+{% extends 'main/base.html' %}
+{% block title %}Giriş Yap{% endblock %}
+{% block content %}
+<h2>Sipariş Detayları - #{{ order.id }}</h2>
+<p>Durum: {{ order.get_status_display }}</p>
+<p>Tarih: {{ order.created_at|date:"d/m/Y H:i" }}</p>
+<p>Adres: {{ order.address }}</p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Ürün</th>
+      <th>Adet</th>
+      <th>Fiyat</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in items %}
+    <tr>
+      <td>{{ item.product.name }}</td>
+      <td>{{ item.quantity }}</td>
+      <td>{{ item.product.price|floatformat:2 }} ₺</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

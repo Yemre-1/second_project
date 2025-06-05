@@ -1,0 +1,65 @@
+{% extends 'main/base.html' %}
+
+
+{% block title %}Ana Sayfa{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+  <h2 class="mb-4">🛒 Sepetiniz</h2>
+
+  {% if items %}
+  <div class="table-responsive">
+    <table class="table align-middle table-bordered shadow-sm">
+      <thead class="table-light">
+        <tr>
+          <th scope="col">Ürün</th>
+          <th scope="col">Adet</th>
+          <th scope="col">Fiyat</th>
+          <th scope="col">Toplam</th>
+          <th scope="col">İşlem</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+        <tr>
+          <td>
+            <div class="d-flex align-items-center">
+              <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" width="60" class="rounded shadow-sm me-3">
+              <div>
+                <strong>{{ item.product.name }}</strong><br>
+                <small class="text-muted">{{ item.product.description|truncatechars:50 }}</small>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="btn-group" role="group">
+              <a href="{% url 'decrease_quantity' item.id %}" class="btn btn-outline-secondary">-</a>
+              <span class="btn btn-outline-light border">{{ item.quantity }}</span>
+              <a href="{% url 'increase_quantity' item.id %}" class="btn btn-outline-secondary">+</a>
+            </div>
+          </td>
+          <td>{{ item.product.price }} ₺</td>
+          <td><strong>{{ item.get_total_price }} ₺</strong></td>
+          <td>
+            <a href="{% url 'remove_item' item.id %}" class="btn btn-outline-danger btn-sm">🗑 Sil</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="d-flex justify-content-between align-items-center mt-4">
+    <h4>Toplam: <strong>{{ total_price }} ₺</strong></h4>
+    <a href="{%url 'product_list'%}" class="btn btn-outline-danger mt-3">Geri Dön</a>
+    <a href="{%url 'checkout'%}" class="btn btn-success btn-lg">Siparişi Tamamla</a>
+  </div>
+
+  {% else %}
+  <div class="alert alert-info">Sepetiniz boş.</div>
+  {% endif %}
+</div>
+
+
+{% endblock %}

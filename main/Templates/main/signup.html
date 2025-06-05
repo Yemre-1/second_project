@@ -1,0 +1,30 @@
+{% extends 'main/base.html' %}
+{% block title %}Kayıt Ol{% endblock %}
+{% block content %}
+{% if error %}
+  <p style="color: red;">{{ error }}</p>
+{% endif %}
+
+<div class="row justify-content-center mt-5">
+<div class="col-md-6">
+  <h2>Kayıt Ol</h2>
+<form method="post">
+    {% csrf_token %}
+   <label for="username"class="form-label">Kullanıcı Adı:</label>
+    <input type="text" name="username" class="form-control" required>
+
+    <label for="email"class="form-label">E-posta:</label>
+    <input type="email" name="email"class="form-control" required>
+
+    <label for="password"class="form-label">Şifre:</label>
+    <input type="password" name="password"class="form-control" required>
+
+    <div class="text-center">
+    <button type="submit" class="mt-4 btn btn-primary">Kayıt Ol</button></div>
+</form>
+<div class="text-center mt-3">
+<a href="{%url 'login'%}" >Hesabın Var Mı? Hemen Giriş Yap</a>
+</div>
+</div>
+</div>
+{% endblock %}
